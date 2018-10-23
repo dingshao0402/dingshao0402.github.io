@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>adddefaultpushpinHTML</title>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+        <style type='text/css'>body{margin:0;padding:0;overflow:hidden;font-family:'Segoe UI',Helvetica,Arial,Sans-Serif}</style>
+    </head>
+    <body>
+        <div id='printoutPanel'></div>
+        
+        <div id='myMap' style='width: 100vw; height: 100vh;'></div>
+        <script type='text/javascript'>
+            function loadMapScenario() {
+                var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {});
+                
+                setInterval(()=>{
+                    $.get("http://34.220.29.102:3000/event", (data, status) => {
+                        if (status === 'success' && !!data) {
+                            map.entities.clear();
+                            var pushpin = new Microsoft.Maps.Pushpin({latitude: data['latitude'], longitude: data['longitude']}, null);
+                            map.entities.push(pushpin);
+                        }
+                    })
+                }, 1000);
+            }
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?key=AvHN_sg31KILf-NgKGEGMCeqQ68I_Y-8LYA40KvTxYIrmlNimRw647hBZbYOYvsb&callback=loadMapScenario' async defer></script>
+    </body>
+</html>
